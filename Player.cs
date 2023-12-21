@@ -10,7 +10,7 @@ namespace Final_Project___Dungons_of_Equavar
         int currentAttack;
         int level, exp;
         Stats stats;
-
+        // sowwy
 
         Texture2D playerTexture;
         Rectangle iconLocation;
