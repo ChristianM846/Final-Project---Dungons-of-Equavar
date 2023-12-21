@@ -6,7 +6,7 @@ namespace Final_Project___Dungons_of_Equavar
     public class Enemy
     {
         float maxHealth, health, attack, MagicAtk, defense, magicDef, speed;
-
+        Stats stats;
         Texture2D enemyTexture;
         Rectangle enemyLocation;
 
@@ -15,8 +15,8 @@ namespace Final_Project___Dungons_of_Equavar
 
 
 
-        public float PhysicalDef { get { return defense; } }
-        public float MagicDef { get { return magicDef; } }
+        public float PhysicalDef { get { return stats.Defense; } }
+        public float MagicDef { get { return stats.MagicDefense; } }
         public int Weakness { get; private set; }
         public int Resist { get; private set; }
         public int Immune { get; private set; }

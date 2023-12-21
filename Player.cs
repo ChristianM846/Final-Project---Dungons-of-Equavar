@@ -6,9 +6,11 @@ namespace Final_Project___Dungons_of_Equavar
 {
     internal class Player
     {
-        int currentAttack;
-        float maxHealth, health, maxMana, mana, attack, magicAttack, defense, magicDefense, speed;
         string name;
+        int currentAttack;
+        int level, exp;
+        Stats stats;
+
 
         Texture2D playerTexture;
         Rectangle iconLocation;
@@ -19,28 +21,24 @@ namespace Final_Project___Dungons_of_Equavar
         {
             this.name = name;
             //Stats
-            this.maxHealth = maxhealth;
-            this.health = maxhealth;
-            this.maxMana = maxMana;
-            this.mana = maxMana;
-            this.attack = attack;
-            this.magicAttack = magicAttack;
-            this.defense = defense;
-            this.magicDefense = magicDefense;
-            this.speed = speed;
+            this.stats = new Stats(maxhealth, maxhealth, maxMana, maxMana, attack, defense, magicAttack, magicDefense, speed);
             //Icon Tex and Attacks
             this.playerTexture = playerIcon;
             this.attacks = attacks;
             this.statText = font;
             this.iconLocation = iconRect;
             currentAttack = -1;
+            level = 1; exp = 0;
         }
+
+        public Stats Stats { get { return stats; } set { stats = value; } }
+
 
         public void Draw(SpriteBatch sprite)
         {
             sprite.Draw(playerTexture, iconLocation, Color.White);
-            sprite.DrawString(statText, $"HP: {health}/{maxHealth}", new Vector2(iconLocation.X + 60, iconLocation.Y), Color.White );
-            sprite.DrawString(statText, $"MP: {mana}/{maxMana}", new Vector2(iconLocation.X + 60, iconLocation.Y + 30), Color.White);
+            sprite.DrawString(statText, $"HP: {stats.Health}/{stats.MaxHealth}", new Vector2(iconLocation.X + 60, iconLocation.Y), Color.White );
+            sprite.DrawString(statText, $"MP: {stats.Mana}/{stats.MaxMana}", new Vector2(iconLocation.X + 60, iconLocation.Y + 30), Color.White);
             sprite.DrawString(statText, name, new Vector2(iconLocation.X, iconLocation.Bottom + 5), Color.White);
 
             foreach (Attack attack in attacks)
@@ -65,7 +63,8 @@ namespace Final_Project___Dungons_of_Equavar
                 {
                     didAttack = true;
                     currentAttack = i;
-                    mana -= attacks[i].UseMana();
+                    float mana = stats.Mana - attacks[i].UseMana();
+                    stats.Mana = mana;
                 }
             }
             return didAttack;
@@ -73,15 +72,24 @@ namespace Final_Project___Dungons_of_Equavar
 
         public void DamageCalc(Enemy enemy)
         {
-            float dmg = attacks[currentAttack].AttackDmg(attack, magicAttack, enemy);
+            float dmg = attacks[currentAttack].AttackDmg(stats.Attack, stats.MagicAttack, enemy);
             enemy.TakeDmg(dmg);
             currentAttack = -1;
         }
 
         public void TakeDmg(float dmg)
         {
-            health -= dmg;
+            float health = stats.Health - dmg;
+            stats.Health = health;
+            
         }
+
+        public bool GainExp(int exp)
+        {
+            this.exp += exp;
+            return exp > 200 * level;
+        }
+
 
     }
 }

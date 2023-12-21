@@ -22,6 +22,15 @@ namespace Final_Project___Dungons_of_Equavar
         public Stats(float health, float maxHealth, float mana, float maxMana, float attack, float defense, float magicAttack, float magicDefense, float speed)
         {
             StatMultiplyer = 1;
+            this.health = health;
+            this.maxHealth = maxHealth;
+            this.mana = mana;
+            this.maxMana = maxMana;
+            this.attack = attack;
+            this.defense = defense;
+            this.magicAttack = magicAttack;
+            this.magicDefense = magicDefense;
+            this.speed = speed;
         }
 
     }
