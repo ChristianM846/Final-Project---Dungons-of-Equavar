@@ -11,9 +11,15 @@ namespace Final_Project___Dungons_of_Equavar
 
         MouseState mouseState;
 
+        Texture2D menuTexture;
+        Texture2D battleTexture;
+        Texture2D backgroundTexture;
 
-        Player scorpio;
+
+
         Player kalstar;
+        Player scorpious;
+        
 
 
         enum Screen
@@ -31,8 +37,8 @@ namespace Final_Project___Dungons_of_Equavar
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _graphics.PreferredBackBufferHeight = 640;
             _graphics.PreferredBackBufferWidth = 900;
+            _graphics.PreferredBackBufferHeight = 640;
             _graphics.ApplyChanges();
         }
 
@@ -55,6 +61,11 @@ namespace Final_Project___Dungons_of_Equavar
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            menuTexture = Content.Load<Texture2D>("MenuScreen");
+            battleTexture = Content.Load<Texture2D>("BattleBackground");
+            backgroundTexture = Content.Load<Texture2D>("rectangle");
+
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -74,8 +85,13 @@ namespace Final_Project___Dungons_of_Equavar
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin();
 
 
+
+
+
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

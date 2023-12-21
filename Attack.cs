@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Final_Project___Dungons_of_Equavar
 
@@ -21,18 +16,32 @@ namespace Final_Project___Dungons_of_Equavar
 
         // 0 = Bludgeoning, 1 = Piercing, 2 = Radiant, 3 = Fire, 4 = Ice, 5 = Lightning
         int dmgType;
-        float basePower;
+        float basePower, manaUsage;
 
 
         public bool UseMagicAtk { get; private set; }
         public bool IsMagicDmg { get; private set; }
-
-        public Attack(Texture2D icon, Texture2D animation, Rectangle iconLoc, Rectangle animPos)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="icon"></param>
+        /// <param name="animation"></param>
+        /// <param name="iconLoc"></param>
+        /// <param name="animPos"></param>
+        /// <param name="manaUsage"></param>
+        /// <param name="basePower"></param>
+        /// <param name="damageType">0 = Bludgeoning, 1 = Piercing, 2 = Radiant, 3 = Fire, 4 = Ice, 5 = Lightning</param>
+        public Attack(Texture2D icon, Texture2D animation, Rectangle iconLoc, Rectangle animPos, float manaUsage, float basePower, int damageType)
         {
             this.attackIcon = icon;
             this.attackAnimation = animation;
             this.iconPosition = iconLoc;
             this.animationPosition = animPos;
+        }
+
+        public float UseMana()
+        {
+            return manaUsage;
         }
 
         public void DrawIcon(SpriteBatch sprite)
@@ -45,7 +54,7 @@ namespace Final_Project___Dungons_of_Equavar
         }
         public float AttackDmg(float physicalAtk, float magicAtk, Enemy enemy)
         {
-            float atk,def;
+            float atk, def;
             if (UseMagicAtk)
                 atk = magicAtk;
             else
@@ -72,6 +81,7 @@ namespace Final_Project___Dungons_of_Equavar
             return dmg;
         }
 
+        public Rectangle rectangle { get { return iconPosition; } }
 
     }
 }
