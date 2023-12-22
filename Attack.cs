@@ -5,6 +5,7 @@ using System;
 namespace Final_Project___Dungons_of_Equavar
 
 {
+    //A class that holds all the attacks information
     public class Attack
     {
         static Random rngFactor = new Random();
@@ -19,10 +20,10 @@ namespace Final_Project___Dungons_of_Equavar
         float basePower, manaUsage;
 
 
-        public bool UseMagicAtk { get; private set; }
-        public bool IsMagicDmg { get; private set; }
+        private bool UseMagicAtk { get; set; }
+        private bool IsMagicDmg { get; set; }
         /// <summary>
-        /// 
+        /// Creates a new attack
         /// </summary>
         /// <param name="icon"></param>
         /// <param name="animation"></param>
@@ -38,7 +39,10 @@ namespace Final_Project___Dungons_of_Equavar
             this.iconPosition = iconLoc;
             this.animationPosition = animPos;
         }
-
+        /// <summary>
+        /// How much mana the attack uses
+        /// </summary>
+        /// <returns></returns>
         public float UseMana()
         {
             return manaUsage;
@@ -52,6 +56,13 @@ namespace Final_Project___Dungons_of_Equavar
         {
             sprite.Draw(attackAnimation, animationPosition, Color.White);
         }
+        /// <summary>
+        /// Calculates how much damage will be dealt.
+        /// </summary>
+        /// <param name="physicalAtk"></param>
+        /// <param name="magicAtk"></param>
+        /// <param name="enemy"></param>
+        /// <returns>The amount of damage to deal to enemy</returns>
         public float AttackDmg(float physicalAtk, float magicAtk, Enemy enemy)
         {
             float atk, def;
@@ -80,7 +91,9 @@ namespace Final_Project___Dungons_of_Equavar
 
             return dmg;
         }
-
+        /// <summary>
+        /// Returns the location of icon
+        /// </summary>
         public Rectangle rectangle { get { return iconPosition; } }
 
     }
