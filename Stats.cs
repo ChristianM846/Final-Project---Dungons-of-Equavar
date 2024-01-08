@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Final_Project___Dungons_of_Equavar
 {
+    //Holds all stats in a single class so it is more readable and organized
+    //All stats can be accessed via Stats.<insert stat name here>
     public class Stats
     {
         private float maxHealth, health, maxMana, mana, attack, magicAttack, defense, magicDefense, speed;
