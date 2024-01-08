@@ -12,10 +12,12 @@ namespace Final_Project___Dungons_of_Equavar
         MouseState mouseState;
 
         Texture2D menuTexture;
+        Texture2D startButtonTexture;
         Texture2D battleTexture;
         Texture2D backgroundTexture;
 
-
+        Rectangle menuRect;
+        Rectangle startButtonRect;
 
         Player kalstar;
         Player scorpious;
@@ -45,7 +47,8 @@ namespace Final_Project___Dungons_of_Equavar
         protected override void Initialize()
         {
             screen = Screen.Menu;
-
+            menuRect = new Rectangle(0, 0, 900, 640);
+            startButtonRect = new Rectangle(300, 500, 300, 50);
 
 
 
@@ -62,6 +65,7 @@ namespace Final_Project___Dungons_of_Equavar
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             menuTexture = Content.Load<Texture2D>("MenuScreen");
+            startButtonTexture = Content.Load<Texture2D>("rectangle");
             battleTexture = Content.Load<Texture2D>("BattleBackground");
             backgroundTexture = Content.Load<Texture2D>("rectangle");
 
@@ -84,9 +88,15 @@ namespace Final_Project___Dungons_of_Equavar
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
 
+            if (screen == Screen.Menu)
+            {
+                _spriteBatch.Draw(menuTexture, menuRect, Color.White);
+                _spriteBatch.Draw(startButtonTexture, startButtonRect, Color.LightGray);
+
+            }
 
 
 

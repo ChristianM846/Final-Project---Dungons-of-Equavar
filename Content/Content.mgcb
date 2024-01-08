@@ -37,6 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:BattleBackground.jpg
 
+#begin BattleTheme.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BattleTheme.wav
+
 #begin BleedingArrowIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -181,6 +187,12 @@
 /processorParam:TextureFormat=Color
 /build:IceShardIcon.png
 
+#begin IntroTheme.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:IntroTheme.wav
+
 #begin KalstarPortrait.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -252,6 +264,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MenuScreen.png
+
+#begin MenuText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:MenuText.spritefont
 
 #begin Poison Arrow.png
 /importer:TextureImporter
@@ -396,6 +415,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:StaffWackIcon.png
+
+#begin TitleCard.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:TitleCard.spritefont
 
 #begin TripleArrowIcon.png
 /importer:TextureImporter
