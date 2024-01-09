@@ -356,6 +356,9 @@
 /processorParam:TextureFormat=Color
 /build:SeraphinaPortrait.png
 
+#begin SEVESBRG.TTF
+/copy:SEVESBRG.TTF
+
 #begin ShieldOfFaithIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor

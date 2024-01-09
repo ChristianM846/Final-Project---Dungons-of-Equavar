@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -18,6 +19,12 @@ namespace Final_Project___Dungons_of_Equavar
 
         Rectangle menuRect;
         Rectangle startButtonRect;
+
+        SpriteFont menuFont;
+        SpriteFont titleFont;
+
+        SoundEffect introTheme;
+        SoundEffectInstance introThemeInstance;
 
         Player kalstar;
         Player scorpious;
@@ -48,7 +55,7 @@ namespace Final_Project___Dungons_of_Equavar
         {
             screen = Screen.Menu;
             menuRect = new Rectangle(0, 0, 900, 640);
-            startButtonRect = new Rectangle(300, 500, 300, 50);
+            startButtonRect = new Rectangle(300, 300, 300, 50);
 
 
 
@@ -63,11 +70,21 @@ namespace Final_Project___Dungons_of_Equavar
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            // Menu
             menuTexture = Content.Load<Texture2D>("MenuScreen");
             startButtonTexture = Content.Load<Texture2D>("rectangle");
+            menuFont = Content.Load<SpriteFont>("MenuText");
+            titleFont = Content.Load<SpriteFont>("TitleCard");
+
+            // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
             backgroundTexture = Content.Load<Texture2D>("rectangle");
+
+
+            //Sound Effects
+            introTheme = Content.Load<SoundEffect>("IntroTheme");
+            introThemeInstance = introTheme.CreateInstance();
+            
 
 
         }
@@ -78,6 +95,18 @@ namespace Final_Project___Dungons_of_Equavar
                 Exit();
             mouseState = Mouse.GetState();
 
+            if (screen == Screen.Menu)
+            {
+                if (introThemeInstance.State == SoundState.Stopped)
+                {
+                    introThemeInstance.Play();
+                }
+
+
+
+
+
+            }
 
 
 
@@ -95,6 +124,9 @@ namespace Final_Project___Dungons_of_Equavar
             {
                 _spriteBatch.Draw(menuTexture, menuRect, Color.White);
                 _spriteBatch.Draw(startButtonTexture, startButtonRect, Color.LightGray);
+                _spriteBatch.DrawString(titleFont, "Dungeons Of Equavar", new Vector2(135, 100), Color.Yellow);
+
+
 
             }
 
