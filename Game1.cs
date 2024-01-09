@@ -78,6 +78,8 @@ namespace Final_Project___Dungons_of_Equavar
 
             // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
+
+            //?
             backgroundTexture = Content.Load<Texture2D>("rectangle");
 
 
@@ -104,7 +106,11 @@ namespace Final_Project___Dungons_of_Equavar
 
 
 
-
+                if (mouseState.LeftButton == ButtonState.Pressed && startButtonRect.Contains(mouseState.Position))
+                {
+                    introThemeInstance.Stop();
+                    screen = Screen.Between;
+                }
 
             }
 
@@ -125,6 +131,12 @@ namespace Final_Project___Dungons_of_Equavar
                 _spriteBatch.Draw(menuTexture, menuRect, Color.White);
                 _spriteBatch.Draw(startButtonTexture, startButtonRect, Color.LightGray);
                 _spriteBatch.DrawString(titleFont, "Dungeons Of Equavar", new Vector2(135, 100), Color.Yellow);
+                _spriteBatch.DrawString(menuFont, "Start Game", new Vector2(350, 310), Color.Black);
+
+
+            }
+            else if (screen == Screen.Between)
+            {
 
 
 
