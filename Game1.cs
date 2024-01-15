@@ -10,7 +10,7 @@ namespace Final_Project___Dungons_of_Equavar
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        int introTextY;
+        int introTextY, characterScreenState;
 
         MouseState mouseState, pastState;
 
@@ -18,14 +18,23 @@ namespace Final_Project___Dungons_of_Equavar
         Texture2D startButtonTexture;
         Texture2D battleTexture;
         Texture2D backgroundTexture;
+        Texture2D textBoxTexture;
+        Texture2D kalstarPortrait;
+        Texture2D scorpiusPortrait;
+        Texture2D seraphinaPortrait;
 
         Rectangle startButtonRect;
         Rectangle backgroundRect;
-
+        Rectangle textBoxrect;
+        Rectangle kalstarPortraitRect;
+        Rectangle scorpiusPortraitRect;
+        Rectangle seraphinaPortraitRect;
+        
         SpriteFont menuFont;
         SpriteFont titleFont;
         SpriteFont introFont;
         SpriteFont statFont;
+        SpriteFont extraTextFont;
         SpriteFont toSkipFont;
 
         SoundEffect introTheme;
@@ -47,6 +56,7 @@ namespace Final_Project___Dungons_of_Equavar
         }
         Screen screen;
 
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,7 +72,11 @@ namespace Final_Project___Dungons_of_Equavar
             screen = Screen.Menu;
             backgroundRect = new Rectangle(0, 0, 900, 640);
             startButtonRect = new Rectangle(300, 300, 300, 50);
-            
+            textBoxrect = new Rectangle(0, 440, 900, 200);
+            kalstarPortraitRect = new Rectangle(200, 150, 125, 125);
+            scorpiusPortraitRect = new Rectangle(600, 150, 125, 125);
+            seraphinaPortraitRect = new Rectangle(400, 150, 125, 125);
+
 
 
             base.Initialize();
@@ -87,6 +101,14 @@ namespace Final_Project___Dungons_of_Equavar
             introFont = Content.Load<SpriteFont>("Intro");
             toSkipFont = Content.Load<SpriteFont>("Tips");
             introTextY = _graphics.PreferredBackBufferHeight;
+
+            // Character Selection
+            textBoxTexture = Content.Load<Texture2D>("TextBox");
+            extraTextFont = Content.Load<SpriteFont>("ExtraText");
+            kalstarPortrait = Content.Load<Texture2D>("KalstarPortrait");
+            scorpiusPortrait = Content.Load<Texture2D>("ScorpiusPortrait");
+            seraphinaPortrait = Content.Load<Texture2D>("SeraphinaPortrait");
+            characterScreenState = 0;
 
             // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
@@ -128,7 +150,7 @@ namespace Final_Project___Dungons_of_Equavar
                 
 
                 
-                if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed)
+                if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed || introTextY <= -2250)
                 {
                     introThemeInstance.Stop();
                     screen = Screen.CharacterSelect;
@@ -151,7 +173,7 @@ namespace Final_Project___Dungons_of_Equavar
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Blue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
 
             if (screen == Screen.Menu)
@@ -204,7 +226,18 @@ namespace Final_Project___Dungons_of_Equavar
             }
             else if (screen == Screen.CharacterSelect)
             {
-                
+                _spriteBatch.Draw(backgroundTexture, backgroundRect, Color.Black);
+                _spriteBatch.Draw(textBoxTexture, textBoxrect, Color.White);
+                _spriteBatch.Draw(kalstarPortrait, kalstarPortraitRect, Color.White);
+                _spriteBatch.Draw(scorpiusPortrait, scorpiusPortraitRect, Color.White);
+                _spriteBatch.Draw(seraphinaPortrait, seraphinaPortraitRect, Color.Gray);
+                // All Text here should start at 30 and be no less than 20 pixels off the top or bottom
+                _spriteBatch.DrawString(extraTextFont, "Okay, so this game is still in early development, and I had to focus on the combat first, so character", new Vector2(30, 460), Color.White);
+                _spriteBatch.DrawString(extraTextFont, "selection needs to come last. Normally you would be able to choose one of the three characters as the", new Vector2(30, 480), Color.White);
+                _spriteBatch.DrawString(extraTextFont, "main character, and one other as your companion. But for now, you'll just have Kalstar as your main", new Vector2(30, 500), Color.White);
+                _spriteBatch.DrawString(extraTextFont, "character (The dragonkin paladin), and Scorpius as your companion (The human wizard). Cool? Cool!", new Vector2(30, 520), Color.White);
+
+
             }
             else if (screen == Screen.BeforeFirstBattle)
             {
