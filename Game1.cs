@@ -10,7 +10,7 @@ namespace Final_Project___Dungons_of_Equavar
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        int introTextY, characterScreenState;
+        int introTextY;
 
         MouseState mouseState, pastState;
 
@@ -25,6 +25,7 @@ namespace Final_Project___Dungons_of_Equavar
 
         Rectangle startButtonRect;
         Rectangle backgroundRect;
+        Rectangle battleBackgroundRect;
         Rectangle textBoxrect;
         Rectangle kalstarPortraitRect;
         Rectangle scorpiusPortraitRect;
@@ -39,6 +40,8 @@ namespace Final_Project___Dungons_of_Equavar
 
         SoundEffect introTheme;
         SoundEffectInstance introThemeInstance;
+        SoundEffect battleTheme;
+        SoundEffectInstance battleThemeInstance;
 
         Player kalstar;
         Player scorpious;
@@ -71,6 +74,7 @@ namespace Final_Project___Dungons_of_Equavar
         {
             screen = Screen.Menu;
             backgroundRect = new Rectangle(0, 0, 900, 640);
+            battleBackgroundRect = new Rectangle(0, 0, 900, 440);
             startButtonRect = new Rectangle(300, 300, 300, 50);
             textBoxrect = new Rectangle(0, 440, 900, 200);
             kalstarPortraitRect = new Rectangle(200, 150, 125, 125);
@@ -108,7 +112,6 @@ namespace Final_Project___Dungons_of_Equavar
             kalstarPortrait = Content.Load<Texture2D>("KalstarPortrait");
             scorpiusPortrait = Content.Load<Texture2D>("ScorpiusPortrait");
             seraphinaPortrait = Content.Load<Texture2D>("SeraphinaPortrait");
-            characterScreenState = 0;
 
             // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
@@ -119,7 +122,8 @@ namespace Final_Project___Dungons_of_Equavar
             //Sound Effects
             introTheme = Content.Load<SoundEffect>("IntroTheme");
             introThemeInstance = introTheme.CreateInstance();
-            
+            battleTheme = Content.Load<SoundEffect>("BattleTheme");
+            battleThemeInstance = battleTheme.CreateInstance();
 
 
         }
@@ -158,6 +162,28 @@ namespace Final_Project___Dungons_of_Equavar
                 introTextY -= 1;
             }
             else if (screen == Screen.CharacterSelect)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed)
+                {
+                    screen = Screen.BeforeFirstBattle;
+                }
+            }
+            else if (screen == Screen.BeforeFirstBattle)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed)
+                {
+                    battleThemeInstance.Play();
+                    screen = Screen.Battle;
+                }
+            }
+            else if (screen == Screen.Battle)
+            {
+
+
+
+
+            }
+            else if (screen == Screen.Between)
             {
 
 
@@ -236,18 +262,22 @@ namespace Final_Project___Dungons_of_Equavar
                 _spriteBatch.DrawString(extraTextFont, "selection needs to come last. Normally you would be able to choose one of the three characters as the", new Vector2(30, 480), Color.White);
                 _spriteBatch.DrawString(extraTextFont, "main character, and one other as your companion. But for now, you'll just have Kalstar as your main", new Vector2(30, 500), Color.White);
                 _spriteBatch.DrawString(extraTextFont, "character (The dragonkin paladin), and Scorpius as your companion (The human wizard). Cool? Cool!", new Vector2(30, 520), Color.White);
-
-
+                _spriteBatch.DrawString(toSkipFont, "Click to Continue", new Vector2(760, 600),Color.White);
             }
             else if (screen == Screen.BeforeFirstBattle)
             {
-
-
-
-
+                _spriteBatch.Draw(backgroundTexture, backgroundRect, Color.Black);
+                _spriteBatch.Draw(textBoxTexture, textBoxrect, Color.White);
+                _spriteBatch.DrawString(extraTextFont, "Normally right here would be a small decription, maybe a small animation showing how the captured", new Vector2(30, 460), Color.White);
+                _spriteBatch.DrawString(extraTextFont, "heroes broke out of their cell and got ready to try and find Sinestra, but that comes after", new Vector2(30, 480), Color.White);
+                _spriteBatch.DrawString(extraTextFont, "I've finished the combat system. So for now, onto the combat", new Vector2(30, 500), Color.White);
+                _spriteBatch.DrawString(toSkipFont, "Click to Continue", new Vector2(760, 600), Color.White);
             }
             else if (screen == Screen.Battle)
             {
+                _spriteBatch.Draw(battleTexture, battleBackgroundRect, Color.White);
+                _spriteBatch.Draw(textBoxTexture, textBoxrect, Color.White);
+
 
 
             }
