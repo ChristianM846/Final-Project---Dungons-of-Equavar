@@ -21,12 +21,12 @@ namespace Final_Project___Dungons_of_Equavar
         public float MagicDefense { get { return magicDefense * StatMultiplyer; } set { magicDefense = value; } }
         public float Speed { get { return speed * StatMultiplyer; } set { speed = value; } }
         public float StatMultiplyer { get; set; }
-        public Stats(float health, float maxHealth, float mana, float maxMana, float attack, float defense, float magicAttack, float magicDefense, float speed)
+        public Stats(float maxHealth, float maxMana, float attack,  float magicAttack,float defense, float magicDefense, float speed)
         {
             StatMultiplyer = 1;
-            this.health = health;
+            this.health = maxHealth;
             this.maxHealth = maxHealth;
-            this.mana = mana;
+            this.mana = maxMana;
             this.maxMana = maxMana;
             this.attack = attack;
             this.defense = defense;

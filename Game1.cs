@@ -116,14 +116,21 @@ namespace Final_Project___Dungons_of_Equavar
             // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
 
-
-
-
             //Sound Effects
             introTheme = Content.Load<SoundEffect>("IntroTheme");
             introThemeInstance = introTheme.CreateInstance();
             battleTheme = Content.Load<SoundEffect>("BattleTheme");
             battleThemeInstance = battleTheme.CreateInstance();
+
+            Stats kalstarStats = new Stats(100, 70, 10, 2, 13, 8, 5);
+            Attack[] kalstarAttacks = new Attack[6]
+            {
+                new Attack(Content.Load<Texture2D>("HammerStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(30, 500, 40, 40), new Rectangle(300, 200, 100, 100), 0, 5, 0),
+
+
+            };
+            kalstar = new Player("Kalstar", kalstarStats, kalstarPortrait, );
+
 
 
         }
