@@ -88,6 +88,10 @@ namespace Final_Project___Dungons_of_Equavar
             {
                 dmg = (((atk * 2 - def) * (1 + (basePower / 100))) * (rngFactor.Next(90, 111) / 100)) * F;
             }
+            else
+            {
+                dmg = (((atk*atk/def) * (1 + (basePower / 100))) * (rngFactor.Next(90, 111) / 100)) *F;
+            }
 
             return dmg;
         }

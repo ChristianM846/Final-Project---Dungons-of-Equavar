@@ -40,11 +40,11 @@ namespace Final_Project___Dungons_of_Equavar
         public void Draw(SpriteBatch sprite)
         {
             sprite.Draw(playerTexture, iconLocation, Color.White);
-            sprite.DrawString(statText, $"HP: {stats.Health}/{stats.MaxHealth}", new Vector2(iconLocation.X + 60, iconLocation.Y), Color.White );
-            sprite.DrawString(statText, $"MP: {stats.Mana}/{stats.MaxMana}", new Vector2(iconLocation.X + 60, iconLocation.Y + 30), Color.White);
+            sprite.DrawString(statText, $"HP: {stats.Health}/{stats.MaxHealth}", new Vector2(iconLocation.X + 80, iconLocation.Y), Color.White );
+            sprite.DrawString(statText, $"MP: {stats.Mana}/{stats.MaxMana}", new Vector2(iconLocation.X + 80, iconLocation.Y + 20), Color.White);
             sprite.DrawString(statText, name, new Vector2(iconLocation.X, iconLocation.Bottom + 5), Color.White);
-            sprite.DrawString(statText, $"Level: {level}", new Vector2(iconLocation.X+120, iconLocation.Y + 15), Color.White);
-            sprite.DrawString(statText, $"Exp: {exp}/{level*200}", new Vector2(iconLocation.X + 170, iconLocation.Bottom + 15), Color.White);
+            sprite.DrawString(statText, $"Level: {level}", new Vector2(iconLocation.X + 190, iconLocation.Y), Color.White);
+            sprite.DrawString(statText, $"Exp: {exp}/{level*200}", new Vector2(iconLocation.X + 190, iconLocation.Y + 20), Color.White);
 
             foreach (Attack attack in attacks)
             {

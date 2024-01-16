@@ -44,7 +44,7 @@ namespace Final_Project___Dungons_of_Equavar
         SoundEffectInstance battleThemeInstance;
 
         Player kalstar;
-        Player scorpious;
+        Player scorpius;
         
 
 
@@ -115,6 +115,7 @@ namespace Final_Project___Dungons_of_Equavar
 
             // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
+            statFont = Content.Load<SpriteFont>("Stats");
 
             //Sound Effects
             introTheme = Content.Load<SoundEffect>("IntroTheme");
@@ -125,13 +126,28 @@ namespace Final_Project___Dungons_of_Equavar
             Stats kalstarStats = new Stats(100, 70, 10, 2, 13, 8, 5);
             Attack[] kalstarAttacks = new Attack[6]
             {
-                new Attack(Content.Load<Texture2D>("HammerStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(30, 500, 40, 40), new Rectangle(300, 200, 100, 100), 0, 5, 0),
-
+                new Attack(Content.Load<Texture2D>("HammerStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(120, 490, 65, 65), new Rectangle(300, 200, 100, 100), 0, 5, 0),
+                new Attack(Content.Load<Texture2D>("DivineStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(200, 490, 65, 65), new Rectangle(300, 200, 100, 100), 10, 8, 2),
+                new Attack(Content.Load<Texture2D>("LayOnHandsIcon"), Content.Load<Texture2D>("LayOnHandsIcon"), new Rectangle(280, 490, 65, 65), new Rectangle(300, 200, 100, 100), 10, 0, 2),
+                new Attack(Content.Load<Texture2D>("ShieldOfFaithIcon"), Content.Load<Texture2D>("ShieldOfFaithIcon"), new Rectangle(120, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2),
+                new Attack(Content.Load<Texture2D>("RaiseTheDeadIcon"), Content.Load<Texture2D>("RaiseTheDeadIcon"), new Rectangle(200, 560, 65, 65), new Rectangle(300, 200, 100, 100), 30, 0, 2),
+                new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(280, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2)
 
             };
-            kalstar = new Player("Kalstar", kalstarStats, kalstarPortrait, );
+            kalstar = new Player("Kalstar", kalstarStats, kalstarPortrait, new Rectangle(20, 450, 75, 75), kalstarAttacks, statFont);
 
+            Stats scorpiusStats = new Stats(60, 100, 3, 15, 5, 15, 10);
+            Attack[] scorpiusAttacks = new Attack[6]
+            {
+                new Attack(Content.Load<Texture2D>("StaffWackIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(520, 490, 65, 65), new Rectangle(300, 200, 100, 100), 0, 2, 0),
+                new Attack(Content.Load<Texture2D>("FireBoltIcon"), Content.Load<Texture2D>("FireBoltEffect"), new Rectangle(600, 490, 65, 65), new Rectangle(300, 200, 100, 100), 5, 6, 3),
+                new Attack(Content.Load<Texture2D>("IceShardIcon"), Content.Load<Texture2D>("IceShardEffect"), new Rectangle(680, 490, 65, 65), new Rectangle(300, 200, 100, 100), 5, 5, 4),
+                new Attack(Content.Load<Texture2D>("ShieldOfFaithIcon"), Content.Load<Texture2D>("ShieldOfFaithIcon"), new Rectangle(520, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2),
+                new Attack(Content.Load<Texture2D>("RaiseTheDeadIcon"), Content.Load<Texture2D>("RaiseTheDeadIcon"), new Rectangle(600, 560, 65, 65), new Rectangle(300, 200, 100, 100), 30, 0, 2),
+                new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(680, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2)
 
+            };
+            scorpius = new Player("Scorpius", scorpiusStats, scorpiusPortrait, new Rectangle(420, 450, 75, 75), scorpiusAttacks, statFont);
 
         }
 
@@ -284,7 +300,8 @@ namespace Final_Project___Dungons_of_Equavar
             {
                 _spriteBatch.Draw(battleTexture, battleBackgroundRect, Color.White);
                 _spriteBatch.Draw(textBoxTexture, textBoxrect, Color.White);
-
+                kalstar.Draw(_spriteBatch);
+                scorpius.Draw(_spriteBatch);
 
 
             }
