@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Final_Project___Dungons_of_Equavar
 {
     //The Player Class is used when creating any character such as Kalstar, Scorpious or Seraphina,
-    internal class Player
+    public class Player
     {
         string name;
         int currentAttack;
@@ -40,7 +40,7 @@ namespace Final_Project___Dungons_of_Equavar
         public void Draw(SpriteBatch sprite)
         {
             sprite.Draw(playerTexture, iconLocation, Color.White);
-            sprite.DrawString(statText, $"HP: {stats.Health}/{stats.MaxHealth}", new Vector2(iconLocation.X + 80, iconLocation.Y), Color.White );
+            sprite.DrawString(statText, $"HP: {stats.Health.ToString("0.0")}/{stats.MaxHealth}", new Vector2(iconLocation.X + 80, iconLocation.Y), Color.White );
             sprite.DrawString(statText, $"MP: {stats.Mana}/{stats.MaxMana}", new Vector2(iconLocation.X + 80, iconLocation.Y + 20), Color.White);
             sprite.DrawString(statText, name, new Vector2(iconLocation.X, iconLocation.Bottom + 5), Color.White);
             sprite.DrawString(statText, $"Level: {level}", new Vector2(iconLocation.X + 190, iconLocation.Y), Color.White);
@@ -68,7 +68,7 @@ namespace Final_Project___Dungons_of_Equavar
 
             for (int i = 0; i < attacks.Length; i++)
             {
-                if (attacks[i].rectangle.Contains(mouse.X, mouse.Y))
+                if (attacks[i].rectangle.Contains(mouse.X, mouse.Y) && stats.Mana >= attacks[i].UseMana())
                 {
                     didAttack = true;
                     currentAttack = i;

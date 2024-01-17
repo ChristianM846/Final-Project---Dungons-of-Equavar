@@ -32,12 +32,17 @@ namespace Final_Project___Dungons_of_Equavar
         /// <param name="manaUsage"></param>
         /// <param name="basePower"></param>
         /// <param name="damageType">0 = Bludgeoning, 1 = Piercing, 2 = Radiant, 3 = Fire, 4 = Ice, 5 = Lightning</param>
-        public Attack(Texture2D icon, Texture2D animation, Rectangle iconLoc, Rectangle animPos, float manaUsage, float basePower, int damageType)
+        public Attack(Texture2D icon, Texture2D animation, Rectangle iconLoc, Rectangle animPos, float manaUsage, bool useMagicAttack, bool dealsMagic, float basePower, int damageType)
         {
             this.attackIcon = icon;
             this.attackAnimation = animation;
             this.iconPosition = iconLoc;
             this.animationPosition = animPos;
+            this.manaUsage = manaUsage;
+            this.UseMagicAtk = useMagicAttack;
+            this.IsMagicDmg = dealsMagic;
+            this.basePower = basePower;
+            this.dmgType = damageType;
         }
         /// <summary>
         /// How much mana the attack uses
@@ -86,11 +91,11 @@ namespace Final_Project___Dungons_of_Equavar
 
             if (atk >= def && F != 0)
             {
-                dmg = (((atk * 2 - def) * (1 + (basePower / 100))) * (rngFactor.Next(90, 111) / 100)) * F;
+                dmg = (((atk * 2 - def) * (1 + (basePower / 100f))) * (rngFactor.Next(90, 111) / 100f)) * F;
             }
             else
             {
-                dmg = (((atk*atk/def) * (1 + (basePower / 100))) * (rngFactor.Next(90, 111) / 100)) *F;
+                dmg = (((atk*atk/def) * (1 + (basePower / 100f))) * (rngFactor.Next(90, 111) / 100f)) *F;
             }
 
             return dmg;

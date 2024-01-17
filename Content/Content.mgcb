@@ -115,6 +115,13 @@
 /processorParam:TextureFormat=Color
 /build:EnemyAttackAnimation.png
 
+#begin EnemyFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:EnemyFont.spritefont
+
 #begin ExtraText.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

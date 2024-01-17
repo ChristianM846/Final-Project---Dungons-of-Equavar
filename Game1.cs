@@ -10,7 +10,7 @@ namespace Final_Project___Dungons_of_Equavar
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        int introTextY;
+        int introTextY, turnCounter;
 
         MouseState mouseState, pastState;
 
@@ -37,6 +37,7 @@ namespace Final_Project___Dungons_of_Equavar
         SpriteFont statFont;
         SpriteFont extraTextFont;
         SpriteFont toSkipFont;
+        SpriteFont enemyFont;
 
         SoundEffect introTheme;
         SoundEffectInstance introThemeInstance;
@@ -45,7 +46,7 @@ namespace Final_Project___Dungons_of_Equavar
 
         Player kalstar;
         Player scorpius;
-        
+        Enemy goblin;
 
 
         enum Screen
@@ -80,7 +81,7 @@ namespace Final_Project___Dungons_of_Equavar
             kalstarPortraitRect = new Rectangle(200, 150, 125, 125);
             scorpiusPortraitRect = new Rectangle(600, 150, 125, 125);
             seraphinaPortraitRect = new Rectangle(400, 150, 125, 125);
-
+            turnCounter = 0;
 
 
             base.Initialize();
@@ -116,6 +117,7 @@ namespace Final_Project___Dungons_of_Equavar
             // Battle
             battleTexture = Content.Load<Texture2D>("BattleBackground");
             statFont = Content.Load<SpriteFont>("Stats");
+            enemyFont = Content.Load<SpriteFont>("EnemyFont");
 
             //Sound Effects
             introTheme = Content.Load<SoundEffect>("IntroTheme");
@@ -123,15 +125,17 @@ namespace Final_Project___Dungons_of_Equavar
             battleTheme = Content.Load<SoundEffect>("BattleTheme");
             battleThemeInstance = battleTheme.CreateInstance();
 
+            Rectangle enemyLocation = new(200, 80, 350, 350);
+
             Stats kalstarStats = new Stats(100, 70, 10, 2, 13, 8, 5);
             Attack[] kalstarAttacks = new Attack[6]
             {
-                new Attack(Content.Load<Texture2D>("HammerStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(120, 490, 65, 65), new Rectangle(300, 200, 100, 100), 0, 5, 0),
-                new Attack(Content.Load<Texture2D>("DivineStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(200, 490, 65, 65), new Rectangle(300, 200, 100, 100), 10, 8, 2),
-                new Attack(Content.Load<Texture2D>("LayOnHandsIcon"), Content.Load<Texture2D>("LayOnHandsIcon"), new Rectangle(280, 490, 65, 65), new Rectangle(300, 200, 100, 100), 10, 0, 2),
-                new Attack(Content.Load<Texture2D>("ShieldOfFaithIcon"), Content.Load<Texture2D>("ShieldOfFaithIcon"), new Rectangle(120, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2),
-                new Attack(Content.Load<Texture2D>("RaiseTheDeadIcon"), Content.Load<Texture2D>("RaiseTheDeadIcon"), new Rectangle(200, 560, 65, 65), new Rectangle(300, 200, 100, 100), 30, 0, 2),
-                new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(280, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2)
+                new Attack(Content.Load<Texture2D>("HammerStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(120, 490, 65, 65), enemyLocation, 0, false, false, 5, 0),
+                new Attack(Content.Load<Texture2D>("DivineStrikeIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(200, 490, 65, 65), enemyLocation, 10, false, true, 8, 2),
+                new Attack(Content.Load<Texture2D>("LayOnHandsIcon"), Content.Load<Texture2D>("LayOnHandsIcon"), new Rectangle(280, 490, 65, 65), enemyLocation, 10, false, false, 0, 2),
+                new Attack(Content.Load<Texture2D>("ShieldOfFaithIcon"), Content.Load<Texture2D>("ShieldOfFaithIcon"), new Rectangle(120, 560, 65, 65), enemyLocation, 5, false, false, 0, 2),
+                new Attack(Content.Load<Texture2D>("RaiseTheDeadIcon"), Content.Load<Texture2D>("RaiseTheDeadIcon"), new Rectangle(200, 560, 65, 65), enemyLocation, 30, false, false, 0, 2),
+                new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(280, 560, 65, 65), enemyLocation, 5, false, false, 0, 2)
 
             };
             kalstar = new Player("Kalstar", kalstarStats, kalstarPortrait, new Rectangle(20, 450, 75, 75), kalstarAttacks, statFont);
@@ -139,15 +143,18 @@ namespace Final_Project___Dungons_of_Equavar
             Stats scorpiusStats = new Stats(60, 100, 3, 15, 5, 15, 10);
             Attack[] scorpiusAttacks = new Attack[6]
             {
-                new Attack(Content.Load<Texture2D>("StaffWackIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(520, 490, 65, 65), new Rectangle(300, 200, 100, 100), 0, 2, 0),
-                new Attack(Content.Load<Texture2D>("FireBoltIcon"), Content.Load<Texture2D>("FireBoltEffect"), new Rectangle(600, 490, 65, 65), new Rectangle(300, 200, 100, 100), 5, 6, 3),
-                new Attack(Content.Load<Texture2D>("IceShardIcon"), Content.Load<Texture2D>("IceShardEffect"), new Rectangle(680, 490, 65, 65), new Rectangle(300, 200, 100, 100), 5, 5, 4),
-                new Attack(Content.Load<Texture2D>("ShieldOfFaithIcon"), Content.Load<Texture2D>("ShieldOfFaithIcon"), new Rectangle(520, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2),
-                new Attack(Content.Load<Texture2D>("RaiseTheDeadIcon"), Content.Load<Texture2D>("RaiseTheDeadIcon"), new Rectangle(600, 560, 65, 65), new Rectangle(300, 200, 100, 100), 30, 0, 2),
-                new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(680, 560, 65, 65), new Rectangle(300, 200, 100, 100), 5, 0, 2)
+                new Attack(Content.Load<Texture2D>("StaffWackIcon"), Content.Load<Texture2D>("StaffWack_HammerStrikeEffect"), new Rectangle(520, 490, 65, 65), enemyLocation, 0, false, false, 2, 0),
+                new Attack(Content.Load<Texture2D>("FireBoltIcon"), Content.Load<Texture2D>("FireBoltEffect"), new Rectangle(600, 490, 65, 65), enemyLocation, 5, true, true, 6, 3),
+                new Attack(Content.Load<Texture2D>("IceShardIcon"), Content.Load<Texture2D>("IceShardEffect"), new Rectangle(680, 490, 65, 65), enemyLocation, 5, true, true, 5, 4),
+                new Attack(Content.Load<Texture2D>("LightningBoltIcon"), Content.Load<Texture2D>("LightningBoltEffect"), new Rectangle(520, 560, 65, 65), enemyLocation, 5, true, true, 6, 5),
+                new Attack(Content.Load<Texture2D>("MeltIcon"), Content.Load<Texture2D>("MeltIcon"), new Rectangle(600, 560, 65, 65), enemyLocation, 15, true, true, 0, 0),
+                new Attack(Content.Load<Texture2D>("WeakenIcon"), Content.Load<Texture2D>("WeakenIcon"), new Rectangle(680, 560, 65, 65), enemyLocation, 15,true, true,  0, 0)
 
             };
             scorpius = new Player("Scorpius", scorpiusStats, scorpiusPortrait, new Rectangle(420, 450, 75, 75), scorpiusAttacks, statFont);
+
+            Stats goblinStats = new Stats(200, 0, 6, 0, 6, 2, 6);
+            goblin = new Enemy(goblinStats, Content.Load<Texture2D>("GoblinSprite"), enemyLocation, false, statFont);
 
         }
 
@@ -201,9 +208,27 @@ namespace Final_Project___Dungons_of_Equavar
             }
             else if (screen == Screen.Battle)
             {
-
-
-
+                if (turnCounter == 0 && mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    if (kalstar.Turn(mouseState))
+                    {
+                        kalstar.DamageCalc(goblin);
+                        turnCounter++;
+                    }
+                }
+                else if (turnCounter == 1 && mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    if (scorpius.Turn(mouseState))
+                    {
+                        scorpius.DamageCalc(goblin);
+                        turnCounter++;
+                    }
+                }
+                else if (turnCounter == 2)
+                {
+                    goblin.Turn(kalstar);
+                    turnCounter = 0;
+                }
 
             }
             else if (screen == Screen.Between)
@@ -302,7 +327,7 @@ namespace Final_Project___Dungons_of_Equavar
                 _spriteBatch.Draw(textBoxTexture, textBoxrect, Color.White);
                 kalstar.Draw(_spriteBatch);
                 scorpius.Draw(_spriteBatch);
-
+                goblin.Draw(_spriteBatch);
 
             }
             else if (screen == Screen.Between)
