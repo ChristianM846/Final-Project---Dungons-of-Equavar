@@ -16,6 +16,9 @@ namespace Final_Project___Dungons_of_Equavar
         Rectangle enemyLocation;
         SpriteFont enemyFont;
 
+        private bool movingDown;
+        private int i;
+
         public Enemy(Stats stats, Texture2D texture, Rectangle location, bool useMagic, SpriteFont enemyFont)
         {
             this.stats = stats;
@@ -26,6 +29,7 @@ namespace Final_Project___Dungons_of_Equavar
             Resist = -1;
             Immune = -1;
             this.enemyFont = enemyFont;
+            movingDown = true;
         }
 
         public Enemy(Stats stats, Texture2D texture, Rectangle location, bool useMagic, int weakness, int resist, int immune, SpriteFont enemyFont)
@@ -38,9 +42,42 @@ namespace Final_Project___Dungons_of_Equavar
             Resist = resist;
             Immune = immune;
             this.enemyFont = enemyFont;
+            movingDown = true;
         }
 
-        public void Turn(Player attackTarget)
+        public bool Turn(Player attackTarget)
+        {
+            bool turn = false;
+
+            if (movingDown)
+            {
+                if (i < 22)
+                {
+                    enemyLocation.Y += 2;
+                }
+                else
+                {
+                    movingDown = false;
+                    i = 0;
+                }
+            }
+            else if (i < 22)
+            {
+                enemyLocation.Y -= 2;
+            }
+            else
+            {
+                movingDown = true; i = 0;
+                turn = true;
+                Damage(attackTarget);
+            }
+            i++;
+
+            return turn;
+        }
+        
+
+        private void Damage(Player attackTarget)
         {
             float atk, def, dmg;
             if (useMagic)
@@ -63,12 +100,13 @@ namespace Final_Project___Dungons_of_Equavar
                 dmg = (((atk * atk / def) * (rngFactor.Next(90, 111) / 100f)));
             }
             attackTarget.TakeDmg(dmg);
+
         }
 
         public void Draw(SpriteBatch sprite)
         {
             sprite.Draw(enemyTexture, enemyLocation, Color.White);
-            sprite.DrawString(enemyFont, $"{stats.Health.ToString("0.0")}/{stats.MaxHealth}", new Vector2(enemyLocation.X + 5, enemyLocation.Y - 20), Color.White);
+            sprite.DrawString(enemyFont, $"{stats.Health.ToString("0.0")}/{stats.MaxHealth}", new Vector2(enemyLocation.X + 125, enemyLocation.Y - 20), Color.White);
         }
 
 
@@ -81,6 +119,10 @@ namespace Final_Project___Dungons_of_Equavar
         public void TakeDmg(float dmg)
         {
             float health = stats.Health - dmg;
+            if (health < 0)
+            { 
+                health = 0;
+            }
             stats.Health = health;
 
         }

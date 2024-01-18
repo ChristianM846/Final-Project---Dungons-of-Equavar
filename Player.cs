@@ -95,6 +95,8 @@ namespace Final_Project___Dungons_of_Equavar
         public void TakeDmg(float dmg)
         {
             float health = stats.Health - dmg;
+            if (health < 0)
+                health = 0;
             stats.Health = health;
             
         }
