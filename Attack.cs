@@ -17,11 +17,17 @@ namespace Final_Project___Dungons_of_Equavar
 
         // 0 = Bludgeoning, 1 = Piercing, 2 = Radiant, 3 = Fire, 4 = Ice, 5 = Lightning
         int dmgType;
+        // Attack = 0, Defense = 1, Magic Attack = 2, Magic Defense = 3, Speed = 4, All = 5, BothAttacks = 6, BothDefense = 7
+        int buffType;
+        float buffAmount;
         float basePower, manaUsage;
 
 
         private bool UseMagicAtk { get; set; }
         private bool IsMagicDmg { get; set; }
+        private bool IsDeBuff { get; set; }
+
+        
         /// <summary>
         /// Creates a new attack
         /// </summary>
@@ -43,6 +49,19 @@ namespace Final_Project___Dungons_of_Equavar
             this.IsMagicDmg = dealsMagic;
             this.basePower = basePower;
             this.dmgType = damageType;
+            buffType = -1;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffStat">Attack = 0, Defense = 1, Magic Attack = 2, Magic Defense = 3, Speed = 4, All = 5, BothAttacks = 6, BothDefense = 7</param>
+        /// <param name="debuff"></param>
+        /// <param name="buffAmount"></param>
+        public void AddBuff(int buffStat, bool debuff, float buffAmount)
+        {
+            this.buffType = buffStat;
+            this.IsDeBuff = debuff;
+            this.buffAmount = buffAmount;
         }
         /// <summary>
         /// How much mana the attack uses
@@ -64,41 +83,120 @@ namespace Final_Project___Dungons_of_Equavar
         /// <summary>
         /// Calculates how much damage will be dealt.
         /// </summary>
-        /// <param name="physicalAtk"></param>
-        /// <param name="magicAtk"></param>
+        /// <param name="playerstats"></param>
         /// <param name="enemy"></param>
         /// <returns>The amount of damage to deal to enemy</returns>
-        public float AttackDmg(float physicalAtk, float magicAtk, Enemy enemy)
+        public void AttackDmg(Stats playerstats, Enemy enemy)
         {
-            float atk, def;
-            if (UseMagicAtk)
-                atk = magicAtk;
-            else
-                atk = physicalAtk;
-
-            if (IsMagicDmg)
-                def = enemy.MagicDef;
-            else
-                def = enemy.PhysicalDef;
-
-            float dmg = 0, F = 1;
-            if (enemy.Weakness == dmgType)
-                F = 2;
-            else if (enemy.Resist == dmgType)
-                F = 0.5f;
-            else if (enemy.Immune == dmgType)
-                F = 0;
-
-            if (atk >= def && F != 0)
+            if (buffType != -1)
             {
-                dmg = (((atk * 2 - def) * (1 + (basePower / 100f))) * (rngFactor.Next(90, 111) / 100f)) * F;
+                if (IsDeBuff)
+                {
+                    if (buffType == 0)
+                    {
+                        enemy.Stats.AttackMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 1)
+                    {
+                        enemy.Stats.DefenseMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 2)
+                    {
+                        enemy.Stats.MagicAttackMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 3)
+                    {
+                        enemy.Stats.MagicDefenseMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 4)
+                    {
+                        enemy.Stats.SpeedMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 5)
+                    {
+                        enemy.Stats.AttackMultiplyer *= buffAmount;
+                        enemy.Stats.DefenseMultiplyer *= buffAmount;
+                        enemy.Stats.MagicAttackMultiplyer *= buffAmount;
+                        enemy.Stats.MagicDefenseMultiplyer *= buffAmount;
+                        enemy.Stats.SpeedMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 6)
+                    {
+                        enemy.Stats.AttackMultiplyer *= buffAmount;
+                        enemy.Stats.MagicAttackMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 7)
+                    {
+                        enemy.Stats.DefenseMultiplyer *= buffAmount;
+                        enemy.Stats.MagicDefenseMultiplyer *= buffAmount;
+                    }
+                }
+                else
+                {
+                    if (buffType == 0)
+                    {
+                        playerstats.AttackMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 1)
+                    {
+                        playerstats.DefenseMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 2)
+                    {
+                        playerstats.MagicAttackMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 3)
+                    {
+                        playerstats.MagicDefenseMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 4)
+                    {
+                        playerstats.SpeedMultiplyer *= buffAmount;
+                    }
+                    else if (buffType == 5)
+                    {
+                        playerstats.AttackMultiplyer *= buffAmount;
+                        playerstats.DefenseMultiplyer *= buffAmount;
+                        playerstats.MagicAttackMultiplyer *= buffAmount;
+                        playerstats.MagicDefenseMultiplyer *= buffAmount;
+                        playerstats.SpeedMultiplyer *= buffAmount;
+                    }
+                }
+                
             }
             else
             {
-                dmg = (((atk*atk/def) * (1 + (basePower / 100f))) * (rngFactor.Next(90, 111) / 100f)) *F;
-            }
+                float atk, def;
+                if (UseMagicAtk)
+                    atk = playerstats.MagicAttack;
+                else
+                    atk = playerstats.Attack;
 
-            return dmg;
+                if (IsMagicDmg)
+                    def = enemy.MagicDef;
+                else
+                    def = enemy.PhysicalDef;
+
+                float dmg = 0, F = 1;
+                if (enemy.Weakness == dmgType)
+                    F = 2;
+                else if (enemy.Resist == dmgType)
+                    F = 0.5f;
+                else if (enemy.Immune == dmgType)
+                    F = 0;
+
+                if (atk >= def && F != 0)
+                {
+                    dmg = (((atk * 2 - def) * (1 + (basePower / 100f))) * (rngFactor.Next(90, 111) / 100f)) * F;
+                }
+                else
+                {
+                    dmg = (((atk * atk / def) * (1 + (basePower / 100f))) * (rngFactor.Next(90, 111) / 100f)) * F;
+                }
+
+                enemy.TakeDmg(dmg);
+            }
+            
         }
         /// <summary>
         /// Returns the location of icon

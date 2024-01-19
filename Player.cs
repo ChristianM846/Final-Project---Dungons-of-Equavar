@@ -84,8 +84,7 @@ namespace Final_Project___Dungons_of_Equavar
         /// <param name="enemy">enemy you are attacking</param>
         public void DamageCalc(Enemy enemy)
         {
-            float dmg = attacks[currentAttack].AttackDmg(stats.Attack, stats.MagicAttack, enemy);
-            enemy.TakeDmg(dmg);
+            attacks[currentAttack].AttackDmg(stats, enemy);
             currentAttack = -1;
         }
         /// <summary>

@@ -127,7 +127,7 @@ namespace Final_Project___Dungons_of_Equavar
 
         }
 
-
+        public Stats Stats { get { return stats; } set { stats = value; } }
 
     }
 }

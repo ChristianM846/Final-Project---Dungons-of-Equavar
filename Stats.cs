@@ -15,15 +15,23 @@ namespace Final_Project___Dungons_of_Equavar
         public float MaxHealth { get { return maxHealth ; } set { maxHealth = value; } }
         public float Mana { get { return mana; } set { mana = value; } }
         public float MaxMana { get { return maxMana; } set { maxMana = value; } }
-        public float Attack { get { return attack * StatMultiplyer; } set { attack = value; } }
-        public float Defense { get { return defense * StatMultiplyer; } set { defense = value; } }
-        public float MagicAttack { get { return magicAttack * StatMultiplyer; } set { magicAttack = value; } }
-        public float MagicDefense { get { return magicDefense * StatMultiplyer; } set { magicDefense = value; } }
-        public float Speed { get { return speed * StatMultiplyer; } set { speed = value; } }
-        public float StatMultiplyer { get; set; }
+        public float Attack { get { return attack * AttackMultiplyer; } set { attack = value; } }
+        public float Defense { get { return defense * DefenseMultiplyer; } set { defense = value; } }
+        public float MagicAttack { get { return magicAttack * MagicAttackMultiplyer; } set { magicAttack = value; } }
+        public float MagicDefense { get { return magicDefense * MagicDefenseMultiplyer; } set { magicDefense = value; } }
+        public float Speed { get { return speed * SpeedMultiplyer; } set { speed = value; } }
+        public float AttackMultiplyer { get; set; }
+        public float DefenseMultiplyer { get; set; }
+        public float MagicAttackMultiplyer { get; set; }
+        public float MagicDefenseMultiplyer { get; set; }
+        public float SpeedMultiplyer { get; set; }
         public Stats(float maxHealth, float maxMana, float attack,  float magicAttack,float defense, float magicDefense, float speed)
         {
-            StatMultiplyer = 1;
+            AttackMultiplyer = 1;
+            DefenseMultiplyer = 1;
+            MagicAttackMultiplyer = 1;
+            MagicDefenseMultiplyer = 1;
+            SpeedMultiplyer = 1;
             this.health = maxHealth;
             this.maxHealth = maxHealth;
             this.mana = maxMana;

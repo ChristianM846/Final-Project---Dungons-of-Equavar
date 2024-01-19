@@ -141,6 +141,8 @@ namespace Final_Project___Dungons_of_Equavar
                 new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(280, 560, 65, 65), new Rectangle(330, 110, 200, 200), 5, false, false, 0, 2)
 
             };
+            kalstarAttacks[3].AddBuff(7, false, 1.5f);
+            kalstarAttacks[5].AddBuff(1, false, 1.5f);
             kalstar = new Player("Kalstar", kalstarStats, kalstarPortrait, new Rectangle(20, 450, 75, 75), kalstarAttacks, statFont);
 
             Stats scorpiusStats = new Stats(60, 100, 3, 15, 5, 15, 10);
@@ -154,6 +156,8 @@ namespace Final_Project___Dungons_of_Equavar
                 new Attack(Content.Load<Texture2D>("WeakenIcon"), Content.Load<Texture2D>("WeakenIcon"), new Rectangle(680, 560, 65, 65), new Rectangle(330, 110, 200, 200), 15,true, true,  0, 0)
 
             };
+            scorpiusAttacks[4].AddBuff(0, true, 0.5f);
+            scorpiusAttacks[5].AddBuff(5, true, 0.75f);
             scorpius = new Player("Scorpius", scorpiusStats, scorpiusPortrait, new Rectangle(420, 450, 75, 75), scorpiusAttacks, statFont);
 
             Stats goblinStats = new Stats(200, 0, 9, 0, 9, 2, 6);
@@ -236,14 +240,27 @@ namespace Final_Project___Dungons_of_Equavar
                 }
                 else if (turnCounter == 1 && (mouseState.LeftButton == ButtonState.Pressed || didAttack))
                 {
-                    if (didAttack)
+                    if (scorpius.Stats.Health == 0)
                     {
+                        turnCounter++;
+                    }
+                    else if (didAttack)
+                    { 
                         if (timer > 2)
                         {
                             scorpius.DamageCalc(goblin);
                             turnCounter++;
                             didAttack = false;
-                            
+
+                            if (scorpius.Stats.Health != 0)
+                            {
+                                scorpius.Stats.Mana += 2;
+
+                                if (scorpius.Stats.Mana > scorpius.Stats.MaxMana)
+                                {
+                                    scorpius.Stats.Mana = scorpius.Stats.MaxMana;
+                                }
+                            }
                         }
                     }
                     else if (scorpius.Turn(mouseState))
