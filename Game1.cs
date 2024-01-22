@@ -11,7 +11,7 @@ namespace Final_Project___Dungons_of_Equavar
         private SpriteBatch _spriteBatch;
 
         bool didAttack, battling;
-        int introTextY, turnCounter;
+        int introTextY, turnCounter, battleNum;
         float timer;
 
         MouseState mouseState, pastState;
@@ -32,7 +32,7 @@ namespace Final_Project___Dungons_of_Equavar
         Rectangle kalstarPortraitRect;
         Rectangle scorpiusPortraitRect;
         Rectangle seraphinaPortraitRect;
-        
+
         SpriteFont menuFont;
         SpriteFont titleFont;
         SpriteFont introFont;
@@ -63,7 +63,7 @@ namespace Final_Project___Dungons_of_Equavar
         }
         Screen screen;
 
-        
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -85,7 +85,7 @@ namespace Final_Project___Dungons_of_Equavar
             scorpiusPortraitRect = new Rectangle(600, 150, 125, 125);
             seraphinaPortraitRect = new Rectangle(400, 150, 125, 125);
             turnCounter = 0;
-
+            battleNum = 0;
 
             base.Initialize();
 
@@ -160,7 +160,7 @@ namespace Final_Project___Dungons_of_Equavar
             scorpiusAttacks[5].AddBuff(5, true, 0.75f);
             scorpius = new Player("Scorpius", scorpiusStats, scorpiusPortrait, new Rectangle(420, 450, 75, 75), scorpiusAttacks, statFont);
 
-            Stats goblinStats = new Stats(200, 0, 9, 0, 9, 2, 6);
+            Stats goblinStats = new Stats(200, 0, 9, 0, 9, 3, 6);
             goblin = new Enemy(goblinStats, Content.Load<Texture2D>("GoblinSprite"), enemyLocation, false, statFont);
 
         }
@@ -186,11 +186,11 @@ namespace Final_Project___Dungons_of_Equavar
                 }
 
             }
-            else if (screen == Screen.Intro) 
+            else if (screen == Screen.Intro)
             {
-                
 
-                
+
+
                 if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed || introTextY <= -2250)
                 {
                     introThemeInstance.Stop();
@@ -219,17 +219,17 @@ namespace Final_Project___Dungons_of_Equavar
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (turnCounter == 0 && (mouseState.LeftButton == ButtonState.Pressed || didAttack))
                 {
-                    if(kalstar.Stats.Health == 0)
+                    if (kalstar.Stats.Health == 0)
                     {
                         turnCounter++;
                     }
-                    else if(didAttack)
+                    else if (didAttack)
                     {
-                        if(timer > 2)
+                        if (timer > 2)
                         {
                             kalstar.DamageCalc(goblin);
-                            turnCounter++;
                             didAttack = false;
+                            turnCounter++;
                         }
                     }
                     else if (kalstar.Turn(mouseState))
@@ -240,67 +240,132 @@ namespace Final_Project___Dungons_of_Equavar
                 }
                 else if (turnCounter == 1 && (mouseState.LeftButton == ButtonState.Pressed || didAttack))
                 {
-                    if (scorpius.Stats.Health == 0)
+                    if (goblin.Stats.Health == 0)
                     {
-                        turnCounter++;
-                    }
-                    else if (didAttack)
-                    { 
-                        if (timer > 2)
+                        if (battling)
                         {
-                            scorpius.DamageCalc(goblin);
-                            turnCounter++;
-                            didAttack = false;
-
-                            if (scorpius.Stats.Health != 0)
+                            if (kalstar.GainExp(50))
                             {
-                                scorpius.Stats.Mana += 2;
+                                kalstar.Stats.MaxHealth += 10;
+                                kalstar.Stats.MaxMana += 5;
+                                kalstar.Stats.Attack += 1;
+                                kalstar.Stats.MagicAttack += 0.5f;
+                                kalstar.Stats.Defense += 1.5f;
+                                kalstar.Stats.MagicDefense += 1;
+                            }
 
-                                if (scorpius.Stats.Mana > scorpius.Stats.MaxMana)
-                                {
-                                    scorpius.Stats.Mana = scorpius.Stats.MaxMana;
-                                }
+                            if (scorpius.GainExp(50))
+                            {
+                                scorpius.Stats.MaxHealth += 5;
+                                scorpius.Stats.MaxMana += 10;
+                                scorpius.Stats.Attack += 0.5f;
+                                scorpius.Stats.MagicAttack += 1;
+                                scorpius.Stats.Defense += 0.5f;
+                                scorpius.Stats.MagicDefense += 2;
                             }
                         }
+
+                        battleThemeInstance.Stop();
+                        battling = false;
+
+                        if (timer > 5)
+                        screen = Screen.Between;
                     }
-                    else if (scorpius.Turn(mouseState))
+                    else
                     {
-                        didAttack = true;
-                        timer = 0;
+                        if (scorpius.Stats.Health == 0)
+                        {
+                            turnCounter++;
+                        }
+                        else if (didAttack)
+                        {
+                            if (timer > 2)
+                            {
+                                scorpius.DamageCalc(goblin);
+                                didAttack = false;
+
+                                if (scorpius.Stats.Health != 0)
+                                {
+                                    scorpius.Stats.Mana += 2;
+
+                                    if (scorpius.Stats.Mana > scorpius.Stats.MaxMana)
+                                    {
+                                        scorpius.Stats.Mana = scorpius.Stats.MaxMana;
+                                    }
+                                }
+
+                                turnCounter++;
+                            }
+                        }
+                        else if (scorpius.Turn(mouseState))
+                        {
+                            didAttack = true;
+                            timer = 0;
+                        }
                     }
                 }
                 else if (turnCounter == 2)
                 {
                     bool gobTurn = false;
+                    if (goblin.Stats.Health == 0)
+                    {
+                        if (battling)
+                        {
+                            if (kalstar.GainExp(50))
+                            {
+                                kalstar.Stats.MaxHealth += 10;
+                                kalstar.Stats.MaxMana += 5;
+                                kalstar.Stats.Attack += 1;
+                                kalstar.Stats.MagicAttack += 0.5f;
+                                kalstar.Stats.Defense += 1.5f;
+                                kalstar.Stats.MagicDefense += 1;
+                            }
 
+                            if (scorpius.GainExp(50))
+                            {
+                                scorpius.Stats.MaxHealth += 5;
+                                scorpius.Stats.MaxMana += 10;
+                                scorpius.Stats.Attack += 0.5f;
+                                scorpius.Stats.MagicAttack += 1;
+                                scorpius.Stats.Defense += 0.5f;
+                                scorpius.Stats.MagicDefense += 2;
+                            }
 
-                    if (kalstar.Stats.Health > 0)
-                    {
-                        gobTurn = goblin.Turn(kalstar);
-                    }
-                    else if (kalstar.Stats.Health == 0 && scorpius.Stats.Health > 0)
-                    {
-                        gobTurn = goblin.Turn(scorpius);
-                    }
-                    
-                    if (kalstar.Stats.Health > 0 || scorpius.Stats.Health > 0)
-                    {
-                        if (gobTurn)
-                        turnCounter = 0;
+                            battling = false;
+                        }
+                        
+                        battleThemeInstance.Stop();
+                        if (timer > 5)
+                        screen = Screen.Between;
                     }
                     else
                     {
-                        battling = false;
-
-                        if (timer > 5)
+                        if (kalstar.Stats.Health > 0)
                         {
-                            battleThemeInstance.Stop();
-                            screen = Screen.GameOver;
+                            gobTurn = goblin.Turn(kalstar);
+                        }
+                        else if (kalstar.Stats.Health == 0 && scorpius.Stats.Health > 0)
+                        {
+                            gobTurn = goblin.Turn(scorpius);
+                        }
+
+                        if (kalstar.Stats.Health > 0 || scorpius.Stats.Health > 0)
+                        {
+                            if (gobTurn)
+                                turnCounter = 0;
+                        }
+                        else
+                        {
+                            battling = false;
+
+                            if (timer > 5)
+                            {
+                                battleThemeInstance.Stop();
+                                screen = Screen.GameOver;
+                            }
                         }
                     }
-
                 }
-
             }
             else if (screen == Screen.Between)
             {
@@ -381,7 +446,7 @@ namespace Final_Project___Dungons_of_Equavar
                 _spriteBatch.DrawString(extraTextFont, "selection needs to come last. Normally you would be able to choose one of the three characters as the", new Vector2(30, 480), Color.White);
                 _spriteBatch.DrawString(extraTextFont, "main character, and one other as your companion. But for now, you'll just have Kalstar as your main", new Vector2(30, 500), Color.White);
                 _spriteBatch.DrawString(extraTextFont, "character (The dragonkin paladin), and Scorpius as your companion (The human wizard). Cool? Cool!", new Vector2(30, 520), Color.White);
-                _spriteBatch.DrawString(toSkipFont, "Click to Continue", new Vector2(760, 600),Color.White);
+                _spriteBatch.DrawString(toSkipFont, "Click to Continue", new Vector2(760, 600), Color.White);
             }
             else if (screen == Screen.BeforeFirstBattle)
             {
@@ -399,19 +464,19 @@ namespace Final_Project___Dungons_of_Equavar
                 goblin.Draw(_spriteBatch);
                 kalstar.Draw(_spriteBatch);
                 scorpius.Draw(_spriteBatch);
-                
+
 
             }
             else if (screen == Screen.Between)
             {
-
+                _spriteBatch.DrawString(titleFont, "Testing", new Vector2(300, 300), Color.White);
 
             }
             else if (screen == Screen.GameOver)
             {
                 _spriteBatch.DrawString(titleFont, "GAME OVER", new Vector2(300, 300), Color.White);
             }
-            
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

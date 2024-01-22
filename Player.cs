@@ -28,7 +28,7 @@ namespace Final_Project___Dungons_of_Equavar
             this.statText = font;
             this.iconLocation = iconRect;
             currentAttack = -1;
-            level = 1; exp = 0;
+            level = 1; exp = 150;
         }
 
         public Stats Stats { get { return stats; } set { stats = value; } }
@@ -107,9 +107,9 @@ namespace Final_Project___Dungons_of_Equavar
         public bool GainExp(int exp)
         {
             this.exp += exp;
-            if (exp >= 200 * level)
+            if (this.exp >= 200 * level)
             {
-                exp -= 200 * level;
+                this.exp -= 200 * level;
                 level++;
                 return true;
             }
