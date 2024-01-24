@@ -10,9 +10,9 @@ namespace Final_Project___Dungons_of_Equavar
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        bool didAttack, battling;
-        int introTextY, turnCounter, battleNum;
-        float timer;
+        bool didAttack, battling, fullHeal, healedAfterBattle;
+        int introTextY, turnCounter;
+        float timer, battleNum;
 
         MouseState mouseState, pastState;
 
@@ -86,13 +86,10 @@ namespace Final_Project___Dungons_of_Equavar
             seraphinaPortraitRect = new Rectangle(400, 150, 125, 125);
             turnCounter = 0;
             battleNum = 0;
+            fullHeal = false;
+            healedAfterBattle = false;
 
             base.Initialize();
-
-
-
-
-
         }
 
         protected override void LoadContent()
@@ -141,7 +138,9 @@ namespace Final_Project___Dungons_of_Equavar
                 new Attack(Content.Load<Texture2D>("RallyIcon"), Content.Load<Texture2D>("RallyIcon"), new Rectangle(280, 560, 65, 65), new Rectangle(330, 110, 200, 200), 5, false, false, 0, 2)
 
             };
+            kalstarAttacks[2].AddBuff(0, false, 1); // Will be healing
             kalstarAttacks[3].AddBuff(7, false, 1.5f);
+            kalstarAttacks[4].AddBuff(0, false, 1); // Will be revival
             kalstarAttacks[5].AddBuff(1, false, 1.5f);
             kalstar = new Player("Kalstar", kalstarStats, kalstarPortrait, new Rectangle(20, 450, 75, 75), kalstarAttacks, statFont);
 
@@ -238,7 +237,7 @@ namespace Final_Project___Dungons_of_Equavar
                         timer = 0;
                     }
                 }
-                else if (turnCounter == 1 && (mouseState.LeftButton == ButtonState.Pressed || didAttack))
+                else if (turnCounter == 1 && (mouseState.LeftButton == ButtonState.Pressed || didAttack || goblin.Stats.Health == 0))
                 {
                     if (goblin.Stats.Health == 0)
                     {
@@ -263,13 +262,16 @@ namespace Final_Project___Dungons_of_Equavar
                                 scorpius.Stats.Defense += 0.5f;
                                 scorpius.Stats.MagicDefense += 2;
                             }
+                            battling = false;
+                            battleNum++;
                         }
 
                         battleThemeInstance.Stop();
-                        battling = false;
+
+
 
                         if (timer > 5)
-                        screen = Screen.Between;
+                            screen = Screen.Between;
                     }
                     else
                     {
@@ -332,11 +334,12 @@ namespace Final_Project___Dungons_of_Equavar
                             }
 
                             battling = false;
+                            battleNum++;
                         }
-                        
+
                         battleThemeInstance.Stop();
                         if (timer > 5)
-                        screen = Screen.Between;
+                            screen = Screen.Between;
                     }
                     else
                     {
@@ -370,12 +373,58 @@ namespace Final_Project___Dungons_of_Equavar
             else if (screen == Screen.Between)
             {
 
+                if (battleNum / 5 == 1 || battleNum / 5 == 2 || battleNum / 5 == 3 || battleNum / 5 == 4 || battleNum / 5 == 5 && healedAfterBattle == false)
+                {
+                    kalstar.Stats.Health = kalstar.Stats.MaxHealth;
+                    kalstar.Stats.Mana = kalstar.Stats.MaxMana;
+                    scorpius.Stats.Health = scorpius.Stats.MaxHealth;
+                    scorpius.Stats.Mana = scorpius.Stats.MaxMana;
+                    fullHeal = true;
+                    healedAfterBattle = true;
+                }
+                else if (healedAfterBattle == false)
+                {
+                    kalstar.Stats.Health += (kalstar.Stats.MaxHealth / 4);
+                    kalstar.Stats.Mana += (int)kalstar.Stats.MaxMana / 4;
+                    scorpius.Stats.Health += scorpius.Stats.MaxHealth / 4;
+                    scorpius.Stats.Mana += (int)scorpius.Stats.MaxMana / 4;
+
+                    fullHeal = false;
+                    healedAfterBattle = true;
+                }
+
+                if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed)
+                {
+                    goblin.Stats.Health = goblin.Stats.MaxHealth;
+                    turnCounter = 0;
+                    battling = true;
+                    healedAfterBattle = false;
+                    screen = Screen.Battle;
+                    battleThemeInstance.Play();
+                }
 
 
             }
 
+            if (kalstar.Stats.Health > kalstar.Stats.MaxHealth)
+            {
+                kalstar.Stats.Health = kalstar.Stats.MaxHealth;
+            }
 
+            if (kalstar.Stats.Mana > kalstar.Stats.MaxMana)
+            {
+                kalstar.Stats.Mana = kalstar.Stats.MaxMana;
+            }
 
+            if (scorpius.Stats.Health > scorpius.Stats.MaxHealth)
+            {
+                scorpius.Stats.Health = scorpius.Stats.MaxHealth;
+            }
+
+            if (scorpius.Stats.Mana > scorpius.Stats.MaxMana)
+            {
+                scorpius.Stats.Mana = scorpius.Stats.MaxMana;
+            }
 
             pastState = mouseState;
             base.Update(gameTime);
@@ -469,7 +518,16 @@ namespace Final_Project___Dungons_of_Equavar
             }
             else if (screen == Screen.Between)
             {
-                _spriteBatch.DrawString(titleFont, "Testing", new Vector2(300, 300), Color.White);
+                if (fullHeal)
+                {
+                    _spriteBatch.DrawString(introFont, $"You have defeated {battleNum} enemies. Your party \n had time for a long rest, \n fully recovering their health and mana.", new Vector2(75, 50), Color.White);
+                    _spriteBatch.DrawString(toSkipFont, "Click to Continue", new Vector2(760, 600), Color.White);
+                }
+                else
+                {
+                    _spriteBatch.DrawString(introFont, $"You have defeated {battleNum} enemies. Your party \n had time for a short rest, \n partially recovering their health and mana.", new Vector2(75, 50), Color.White);
+                    _spriteBatch.DrawString(toSkipFont, "Click to Continue", new Vector2(760, 600), Color.White);
+                }
 
             }
             else if (screen == Screen.GameOver)

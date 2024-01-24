@@ -28,7 +28,7 @@ namespace Final_Project___Dungons_of_Equavar
             this.statText = font;
             this.iconLocation = iconRect;
             currentAttack = -1;
-            level = 1; exp = 150;
+            level = 1; exp = 0;
         }
 
         public Stats Stats { get { return stats; } set { stats = value; } }
