@@ -395,6 +395,26 @@ namespace Final_Project___Dungons_of_Equavar
 
                 if (mouseState.LeftButton == ButtonState.Pressed && pastState.LeftButton != ButtonState.Pressed)
                 {
+
+                    kalstar.Stats.AttackMultiplyer = 1;
+                    kalstar.Stats.DefenseMultiplyer = 1;
+                    kalstar.Stats.MagicAttackMultiplyer = 1;
+                    kalstar.Stats.MagicDefenseMultiplyer = 1;
+                    kalstar.Stats.SpeedMultiplyer = 1;
+
+                    scorpius.Stats.AttackMultiplyer = 1;
+                    scorpius.Stats.DefenseMultiplyer = 1;
+                    scorpius.Stats.MagicAttackMultiplyer = 1;
+                    scorpius.Stats.MagicDefenseMultiplyer = 1;
+                    scorpius.Stats.SpeedMultiplyer = 1;
+
+                    goblin.Stats.AttackMultiplyer = 1;
+                    goblin.Stats.DefenseMultiplyer = 1;
+                    goblin.Stats.MagicAttackMultiplyer = 1;
+                    goblin.Stats.MagicDefenseMultiplyer = 1;
+                    goblin.Stats.SpeedMultiplyer = 1;
+
+
                     goblin.Stats.Health = goblin.Stats.MaxHealth;
                     turnCounter = 0;
                     battling = true;
@@ -455,7 +475,7 @@ namespace Final_Project___Dungons_of_Equavar
                 _spriteBatch.DrawString(introFont, "the raging orcs, the tricky demons,", new Vector2(170, introTextY + 250), Color.White);
                 _spriteBatch.DrawString(introFont, "and so many more.", new Vector2(295, introTextY + 300), Color.White);
                 _spriteBatch.DrawString(introFont, "However, among the thriving and", new Vector2(160, introTextY + 450), Color.White);
-                _spriteBatch.DrawString(introFont, "peacful creatures, there are times", new Vector2(155, introTextY + 500), Color.White);
+                _spriteBatch.DrawString(introFont, "peaceful creatures, there are times", new Vector2(155, introTextY + 500), Color.White);
                 _spriteBatch.DrawString(introFont, "of war and conflict.", new Vector2(285, introTextY + 550), Color.White);
                 _spriteBatch.DrawString(introFont, "The ongoing war between the,", new Vector2(180, introTextY + 700), Color.White);
                 _spriteBatch.DrawString(introFont, "material plane and the nine hells", new Vector2(165, introTextY + 750), Color.White);
